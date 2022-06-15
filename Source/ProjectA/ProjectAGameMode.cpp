@@ -2,6 +2,7 @@
 
 #include "ProjectAGameMode.h"
 #include "ProjectACharacter.h"
+#include "Engine/DataTable.h"
 #include "UObject/ConstructorHelpers.h"
 
 AProjectAGameMode::AProjectAGameMode()
@@ -12,4 +13,17 @@ AProjectAGameMode::AProjectAGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+
+	static ConstructorHelpers::FObjectFinder<UDataTable> DataTable(TEXT("/Game/Data/DT_CharacterData"));
+	if (DataTable.Succeeded())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DataTable Succeed!"));
+		CharacterDataTable = DataTable.Object;
+	}
+}
+
+
+UDataTable* AProjectAGameMode::GetCharacterDataTable()
+{
+	return CharacterDataTable;
 }

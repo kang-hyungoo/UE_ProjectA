@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "ProjectAGameMode.generated.h"
 
+class UDataTable;
+
 UCLASS(minimalapi)
 class AProjectAGameMode : public AGameModeBase
 {
@@ -13,6 +15,11 @@ class AProjectAGameMode : public AGameModeBase
 
 public:
 	AProjectAGameMode();
+
+	UDataTable* GetCharacterDataTable();
+
+private:
+	UDataTable* CharacterDataTable;
 };
 
 

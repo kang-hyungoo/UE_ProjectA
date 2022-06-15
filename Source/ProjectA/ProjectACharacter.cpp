@@ -8,6 +8,9 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "ProjectAGameMode.h"
+#include "Kismet/GameplayStatics.h"
+#include "ProjectADefinedStruct.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AProjectACharacter
@@ -137,4 +140,25 @@ void AProjectACharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void AProjectACharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	AProjectAGameMode* GameMode = Cast<AProjectAGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+	UDataTable* CharacterDataTable = GameMode->GetCharacterDataTable();
+
+	if (CharacterDataTable != nullptr)
+	{
+		FCharacterDataStruct* CharacterDataTableRow = CharacterDataTable->FindRow<FCharacterDataStruct>((CharacterName), FString(""));
+
+		if (CharacterDataTableRow != nullptr)
+		{
+			GetMesh()->SetSkeletalMesh(CharacterDataTableRow->SK_Mesh_Body);
+			GetMesh()->SetAnimInstanceClass(CharacterDataTableRow->Animation);
+		}
+	}
+	
 }
